@@ -26,7 +26,6 @@
             height: 180px;
             margin: 0 auto 30px;
         }
-        /* 筒（手前） */
         #box-front {
             position: absolute;
             bottom: 0;
@@ -34,12 +33,11 @@
             transform: translateX(-50%);
             width: 80px;
             height: 120px;
-            background: linear-gradient(to right, #d2691e, #8b4513); /* 木のような色 */
+            background: linear-gradient(to right, #d2691e, #8b4513);
             border-radius: 10px 10px 20px 20px;
             z-index: 3;
             box-shadow: 0 5px 10px rgba(0,0,0,0.2);
         }
-        /* 筒のフタ部分（赤い飾り） */
         #box-top {
             position: absolute;
             top: 60px;
@@ -51,29 +49,26 @@
             border-radius: 5px;
             z-index: 4;
         }
-        /* おみくじの棒 */
         #stick {
             position: absolute;
-            bottom: 40px; /* 最初は筒の中に隠す */
+            bottom: 40px; 
             left: 50%;
             transform: translateX(-50%);
             width: 24px;
             height: 100px;
-            background-color: #f5deb3; /* 白木の色 */
+            background-color: #f5deb3; 
             border: 1px solid #deb887;
-            z-index: 2; /* 筒の後ろ、背景の手前 */
-            writing-mode: vertical-rl; /* 文字を縦書きに */
+            z-index: 2; 
+            writing-mode: vertical-rl; 
             text-align: center;
             font-size: 16px;
             font-weight: bold;
             color: #333;
             padding-top: 5px;
             border-radius: 3px;
-            /* 棒が出る時のアニメーション */
             transition: transform 1s cubic-bezier(0.1, 0.8, 0.2, 1);
         }
 
-        /* 筒を振るアニメーション */
         @keyframes shake {
             0% { transform: rotate(0deg); }
             25% { transform: rotate(-15deg); }
@@ -83,11 +78,10 @@
         }
         .shaking {
             animation: shake 0.2s infinite;
-            transform-origin: bottom center; /* 底を中心に揺れる */
+            transform-origin: bottom center; 
         }
-        /* 棒が飛び出す時のクラス */
         .drawn #stick {
-            transform: translate(-50%, -110px); /* 上にスライドする */
+            transform: translate(-50%, -110px); 
         }
 
         /* --- ボタンと結果表示 --- */
@@ -105,7 +99,7 @@
             transition: 0.3s;
         }
         button:hover { background-color: #ff1493; transform: scale(1.05); }
-        button:disabled { background-color: #ccc; cursor: not-allowed; transform: none; }
+        button:disabled { background-color: #ccc; cursor: not-allowed; transform: none; box-shadow: none; }
         
         #result-box {
             margin-top: 20px;
@@ -149,7 +143,8 @@
     <h1>今日もお仕事お疲れ様！</h1>
     
     <div id="omikuji-scene">
-        <div id="stick"></div> <div id="box-top"></div> <div id="box-front"></div> </div>
+        <div id="stick"></div> <div id="box-top"></div> <div id="box-front"></div> 
+    </div>
 
     <p>振ってみて</p>
     <button id="draw-btn" onclick="startOmikuji()">おみくじを振る</button>
@@ -170,6 +165,19 @@
             'photo3.jpg',
             'photo4.jpg'
         ];
+
+        // ★追加：ページを開いた時に「今日すでに引いているか」をチェック
+        window.onload = function() {
+            const lastDrawDate = localStorage.getItem('omikujiDate');
+            const today = new Date().toDateString(); // 今日の日付
+
+            if (lastDrawDate === today) {
+                // 今日すでに引いていた場合、最初からボタンを押せなくする
+                const btn = document.getElementById('draw-btn');
+                btn.disabled = true;
+                btn.innerText = "今日のおみくじは終了！また明日ね";
+            }
+        };
 
         function startOmikuji() {
             const btn = document.getElementById('draw-btn');
@@ -201,8 +209,8 @@
                 let showPhoto = false;
 
                 if (rand < 0.10) {
-                    rankText = "大大吉"; // 棒に縦書きで表示する文字
-                    rankHtml = "大大吉"; // 画面下に表示する文字
+                    rankText = "大大吉"; 
+                    rankHtml = "大大吉"; 
                     messageText = "You're the most beautiful woman! Fighting! マキシマイザー";
                 } else if (rand < 0.50) {
                     rankText = "大吉";
@@ -244,9 +252,11 @@
                     // フワッと表示
                     resultBox.classList.add('show');
 
-                    // ボタンを元に戻す
-                    btn.disabled = false;
-                    btn.innerText = "もう一度振る！";
+                    // ★変更：もう一度引けるように戻すのではなく、今日の分は終了にする
+                    btn.innerText = "また明日引いてね！";
+                    
+                    // ★追加：引いた日付をブラウザに記憶させる
+                    localStorage.setItem('omikujiDate', new Date().toDateString());
 
                 }, 1000); // 棒が出るアニメーション(1秒)を待つ
 
