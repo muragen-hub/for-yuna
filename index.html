@@ -320,13 +320,13 @@
                 let rankText = ""; let rankHtml = ""; let messageText = ""; let showPhoto = false;
 
                 if (rand < 0.10) {
-                    rankText = "大大吉"; rankHtml = "🌟 大大吉 🌟"; 
-                    messageText = "You're the most beautiful woman!<br>Fighting! マキシマイザー";
+                    rankText = "大大吉"; rankHtml = "大大吉"; 
+                    messageText = "You're the most beautiful woman!<br> マキシマイザー";
                 } else if (rand < 0.50) {
-                    rankText = "大吉"; rankHtml = "🍺 大吉 🍺";
+                    rankText = "大吉"; rankHtml = "大吉";
                     messageText = "無理せず。酒がなきゃやってられねえぜのあなたに!";
                 } else {
-                    rankText = "吉"; rankHtml = "💖 吉 💖";
+                    rankText = "吉"; rankHtml = "吉";
                     messageText = "いつも頑張ってて尊敬してるよ。<br>これ見て癒されてね";
                     showPhoto = true;
                 }
@@ -362,12 +362,12 @@
                     localStorage.setItem('omikujiDate', new Date().toDateString());
 
                     let timeLeft = 15;
-                    nextLink.innerText = `次のページへ ➔ (${timeLeft}秒後に自動移動)`;
+                    nextLink.innerText = `次のページへ)`;
                     
                     const countdownTimer = setInterval(() => {
                         timeLeft--;
                         if (timeLeft > 0) {
-                            nextLink.innerText = `次のページへ ➔ (${timeLeft}秒後に自動移動)`;
+                            nextLink.innerText = `次のページへ)`;
                         } else {
                             clearInterval(countdownTimer);
                             window.location.href = 'countdown.html';
