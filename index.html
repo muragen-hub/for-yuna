@@ -150,7 +150,7 @@
             const today = new Date().toDateString(); 
             if (lastDrawDate === today) {
                 drawBtn.disabled = true;
-                drawBtn.innerText = "今日のおみくじは終了！また明日ね";
+                drawBtn.innerText = "今日のおみくじは終了！<br>また明日ね";
                 document.getElementById('next-link').style.display = "inline-block";
             }
         };
@@ -221,7 +221,7 @@
                     }
 
                     resultBox.classList.add('show');
-                    drawBtn.innerText = "今日のおみくじは終了！";
+                    drawBtn.innerHTML = "今日のおみくじは終了！";
                     localStorage.setItem('omikujiDate', new Date().toDateString());
                     
                     // 🌟 次へのリンクを表示
