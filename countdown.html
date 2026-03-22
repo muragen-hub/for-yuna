@@ -6,21 +6,20 @@
     <title>1年の軌跡と、これから</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Kiwi+Maru:wght@400;500&family=Zen+Maru+Gothic:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;700&family=Kiwi+Maru:wght@400;500&family=Zen+Maru+Gothic:wght@400;700&display=swap" rel="stylesheet">
     
     <style>
         /* =========================================
-           基本設定（CSS）
+           基本設定
            ========================================= */
         body {
             font-family: 'Zen Maru Gothic', sans-serif;
             text-align: center;
-            /* 🌟 変更点1：背景を神社のエントランスと同じ紺色のグラデーションに */
-            background: linear-gradient(to bottom, #001f3f, #1a1a3a); /* 深い紺色 */
-            color: #fff; /* 全体の文字色は白に */
+            background: linear-gradient(to bottom, #001f3f, #1a1a3a); 
+            color: #fff;
             margin: 0;
             padding: 0;
-            overflow: hidden; /* スクロールバーを隠す */
+            overflow: hidden;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -31,8 +30,13 @@
             font-family: 'Kiwi Maru', serif;
         }
 
+        /* 🌟 カッコいい英語フォントクラス */
+        .eng-font {
+            font-family: 'Montserrat', sans-serif;
+        }
+
         /* =========================================
-           📅 カレンダー（スライドショー）部分
+           📅 カレンダー部分
            ========================================= */
         #calendar-section {
             position: absolute;
@@ -40,85 +44,72 @@
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            transition: opacity 2s ease; /* カウントダウンへの切り替え用 */
+            transition: opacity 2s ease;
             z-index: 5;
         }
 
-        /* カレンダーの大枠（3D空間を作る） */
         .calendar-wrapper {
             position: relative;
             width: 85vw;
             max-width: 320px;
             height: 420px;
-            perspective: 1500px; /* 立体感（奥行き）を出す */
+            perspective: 1500px;
             margin-top: 30px;
         }
 
-        /* カレンダーのリング（上部にある銀色の金具） */
         .ring {
             position: absolute;
             top: -18px;
             width: 18px;
             height: 38px;
-            background: linear-gradient(to right, #ccc, #fff, #999); /* 銀色の立体感 */
+            background: linear-gradient(to right, #ccc, #fff, #999);
             border-radius: 9px;
             box-shadow: 2px 3px 6px rgba(0,0,0,0.6);
-            z-index: 100; /* 一番上に表示 */
+            z-index: 100;
         }
         .ring.left { left: 50px; }
         .ring.right { right: 50px; }
 
-        /* めくれる1枚1枚のページ（紙） */
         .calendar-page {
             position: absolute;
             top: 0; left: 0;
             width: 100%; height: 100%;
-            /* 🌟 変更点2：ページ全体を真っ白にして「白色のフォトフレーム（縁）」にする */
-            background-color: #ffffff; /* 純白 */
-            border-radius: 3px 3px 15px 15px; /* 角を少し丸く */
-            box-shadow: 0 10px 30px rgba(0,0,0,0.8); /* 影を強くして浮かび上がらせる */
+            background-color: #ffffff;
+            border-radius: 3px 3px 15px 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.8);
             display: flex;
             flex-direction: column;
             align-items: center;
-            /* 🌟 変更点3：Paddingを調整して、写真の周りに均等な白縁を作る */
-            padding: 15px; /* 白い縁の厚さ */
-            padding-bottom: 55px; /* 文字（〇ヶ月）を下に配置するためのスペース */
+            padding: 15px;
+            padding-bottom: 55px;
             box-sizing: border-box;
-            
-            /* めくれるアニメーションの軸を「上端」にする */
             transform-origin: top center; 
             transition: transform 0.6s ease-in, opacity 0.4s ease-in;
         }
 
-        /* めくれた状態（上に90度パタンと倒れて消える） */
         .calendar-page.flipped {
-            transform: rotateX(110deg); /* 90度以上倒して完全に隠す */
+            transform: rotateX(110deg);
             opacity: 0;
         }
 
-        /* カレンダー内の写真 */
         .calendar-img {
             width: 100%;
-            height: 290px; /* 写真の高さを調整 */
-            object-fit: cover; /* 画像の比率を保ったまま枠を埋める */
+            height: 290px;
+            object-fit: cover;
             border-radius: 2px;
-            border: none; /* 写真自体の灰色の縁を消す（白いフレームが縁になるため） */
             background-color: #eee;
         }
 
-        /* カレンダー内のテキスト（〇ヶ月） */
         .calendar-text {
-            /* 🌟 変更点4：文字の色を白色の紙に映える濃い色に */
-            color: #222; /* 濃いグレー */
+            color: #222;
             font-size: 2.1em;
             font-weight: bold;
-            margin-top: 15px; /* Spacing adjusted */
+            margin-top: 15px;
             letter-spacing: 2px;
-            text-shadow: none; /* 影を消してスッキリさせる */
         }
 
         /* =========================================
-           ⏳ カウントダウン画面（最初は隠しておく）
+           ⏳ カウントダウン画面
            ========================================= */
         #countdown-container {
             display: none;
@@ -128,17 +119,20 @@
             z-index: 10;
         }
 
-        h1 {
-            color: #ff69b4; /* 可愛いピンク色 */
-            font-size: 2.1em;
-            letter-spacing: 2px;
+        /* 🌟 タイトルのデザイン（英語仕様） */
+        h1.eng-font {
+            color: #ff69b4;
+            font-size: 1.8em; /* 英語なので少し調整 */
+            font-weight: 300;
+            letter-spacing: 4px;
+            text-transform: uppercase; /* 大文字にしてカッコよく */
             margin-bottom: 45px;
             text-shadow: 0 0 15px rgba(255, 105, 180, 0.6);
         }
 
         .timer-box {
             background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(10px); /* すりガラス風のオシャレな背景 */
+            backdrop-filter: blur(10px);
             padding: 45px 35px;
             border-radius: 25px;
             border: 1px solid rgba(255, 255, 255, 0.2);
@@ -146,18 +140,21 @@
             display: inline-block;
         }
 
+        /* 🌟 数字のデザイン */
         .timer {
-            font-size: 3em;
-            font-weight: bold;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 3.5em;
+            font-weight: 700;
             color: #fff;
             letter-spacing: 2px;
             text-shadow: 0 2px 5px rgba(0,0,0,0.6);
         }
 
         .timer span {
-            font-size: 0.5em;
-            color: #ffcc00; /* 金色のラベル */
-            margin: 0 6px;
+            font-size: 0.4em;
+            color: #ffcc00;
+            margin: 0 8px;
+            font-weight: 400;
         }
 
         .back-link {
@@ -166,15 +163,10 @@
             text-decoration: none;
             color: #ff69b4;
             font-weight: bold;
-            font-size: 1.25em;
+            font-size: 1.15em;
             border-bottom: 2px solid #ff69b4;
             padding-bottom: 6px;
             transition: 0.3s;
-        }
-        .back-link:hover {
-            color: #ff1493;
-            border-color: #ff1493;
-            transform: scale(1.05);
         }
     </style>
 </head>
@@ -184,15 +176,14 @@
         <div class="calendar-wrapper" id="calendar-wrapper">
             <div class="ring left"></div>
             <div class="ring right"></div>
-            
-            </div>
+        </div>
     </div>
 
     <div id="countdown-container">
-        <h1 class="wafu-font">Countdown to our 1st Anniversary</h1>
+        <h1 class="eng-font">Countdown to our<br>1st Anniversary</h1>
         
         <div class="timer-box">
-            <div class="timer" id="countdown"></div>
+            <div class="timer eng-font" id="countdown"></div>
         </div>
 
         <br>
@@ -200,12 +191,6 @@
     </div>
 
     <script>
-        // =========================================
-        // 📅 1. カレンダーめくりの設定（JavaScript）
-        // =========================================
-        
-        // 12ヶ月分のデータ（画像と文字）
-        // ★ご自身の写真ファイル名に合わせてください（12枚）
         const monthData = [
             { image: 'month1.jpg', text: '1ヶ月' },
             { image: 'month2.jpg', text: '2ヶ月' },
@@ -218,104 +203,81 @@
             { image: 'month9.jpg', text: '9ヶ月' },
             { image: 'month10.jpg', text: '10ヶ月' },
             { image: 'month11.jpg', text: '11ヶ月' },
+            // 必要に応じてここに 'month12.jpg' などを追加してください
         ];
 
         const calendarWrapper = document.getElementById('calendar-wrapper');
         const calendarSection = document.getElementById('calendar-section');
         const countContainer = document.getElementById('countdown-container');
-        
-        let pages = []; // 生成したページ（DOM要素）を保存する配列
+        let pages = [];
 
-        // HTMLを生成してカレンダーを組み立てる関数
         function createCalendar() {
-            // 1ヶ月目が一番上、12ヶ月目が一番下になるように配置する
             for (let i = 0; i < monthData.length; i++) {
                 const page = document.createElement('div');
                 page.className = 'calendar-page';
-                // z-indexを使って重なり順を調整 (1ヶ月目が12、12ヶ月目が1)
                 page.style.zIndex = monthData.length - i; 
-
-                // ページ（白いフレーム）の中身を作成
                 page.innerHTML = `
-                    <img class="calendar-img" src="${monthData[i].image}" alt="${monthData[i].text}の写真">
+                    <img class="calendar-img" src="${monthData[i].image}" alt="${monthData[i].text}">
                     <div class="calendar-text wafu-font">${monthData[i].text}</div>
                 `;
                 calendarWrapper.appendChild(page);
-                pages.push(page); // 配列に追加
+                pages.push(page);
             }
         }
 
-        // カレンダーをペラペラとめくる関数
         function startFlipping() {
             let currentIndex = 0;
-
-            // 1.8秒ごとにペラッとめくる（時間を調整）
             const flipInterval = setInterval(() => {
                 if (currentIndex < pages.length - 1) {
-                    // 現在のページに 'flipped' クラスを付けて上にめくる（CSS発動）
                     pages[currentIndex].classList.add('flipped');
                     currentIndex++;
                 } else {
-                    // 12ヶ月目まで見せ終わったら、タイマーを止める
                     clearInterval(flipInterval);
-                    
-                    // 2.5秒ほど最後のページ（1年）を見せてから、カウントダウンへ移行
                     setTimeout(() => {
-                        calendarSection.style.opacity = '0'; // カレンダー全体を消す
-                        
+                        calendarSection.style.opacity = '0';
                         setTimeout(() => {
                             calendarSection.style.display = 'none';
                             countContainer.style.display = 'block';
-                            
-                            // カウントダウンをフワッと表示
                             setTimeout(() => {
                                 countContainer.style.opacity = '1';
                             }, 100);
                         }, 2000);
-                    }, 2500); // 最後の余韻
+                    }, 2500);
                 }
-            }, 1800); // ★1枚あたりの表示時間（1800ミリ秒 = 1.8秒）
+            }, 1800);
         }
 
-        // ページが開かれたらカレンダーを生成して、めくり始める
         window.onload = () => {
             createCalendar();
-            // 2.5秒待ってからめくり始める（エントランスからの繋がりのため少し長く）
             setTimeout(startFlipping, 2500); 
         };
 
-
-        // =========================================
-        // ⏳ 2. カウントダウンの設定（JavaScript）
-        // =========================================
-        // ★記念日の日付を設定してください（年-月-日T時間:分:秒）
+        // 🌟 ターゲット日付
         const targetDate = new Date("2026-03-26T00:00:00").getTime();
 
         const timer = setInterval(function() {
             const now = new Date().getTime();
             const distance = targetDate - now;
 
-            // 記念日を過ぎた場合
             if (distance < 0) {
                 clearInterval(timer);
-                document.getElementById("countdown").innerHTML = "🎉 おめでとう！これからの未来へ 🎉";
-                document.getElementById("countdown").style.fontSize = "1.8em";
+                document.getElementById("countdown").innerHTML = "🎉 Happy Anniversary 🎉";
+                document.getElementById("countdown").style.fontSize = "1.5em";
                 return;
             }
 
-            // 日、時間、分、秒の計算
             const days = Math.floor(distance / (1000 * 60 * 60 * 24));
             const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
             const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
             const seconds = Math.floor((distance % (1000 * 60)) / 1000);
 
-            // カウントダウンのデザインをリッチにする
+            // 🌟 単位も英語にする場合はこちらを変更
             document.getElementById("countdown").innerHTML = 
-                days + "<span>日</span>" + 
-                hours + "<span>時間</span>" + 
-                minutes + "<span>分</span>" + 
-                seconds + "<span>秒</span>";
-        }, 1000); // 1秒ごとに更新
+                days + "<span>Days</span>" + 
+                hours + "<span>Hrs</span>" + 
+                minutes + "<span>Min</span>" + 
+                seconds + "<span>Sec</span>";
+        }, 1000);
     </script>
 </body>
 </html>
