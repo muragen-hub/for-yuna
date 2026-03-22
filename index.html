@@ -13,9 +13,9 @@
            ✨ 全体の基本設定（CSS）
            ========================================= */
         :root {
-            --bg-color-day: #fff0f5; /* おみくじ画面の背景 */
-            --torii-red: #c9171e;   /* 鳥居の赤 */
-            --candle-fire: #ff9d00;  /* ろうそくの炎 */
+            --bg-color-day: #fff0f5;
+            --torii-red: #c9171e;  
+            --candle-fire: #ff9d00; 
             --text-color: #333;
             --main-pink: #ff69b4;
         }
@@ -31,7 +31,6 @@
             transition: background-color 2s ease;
         }
 
-        /* 和風フォントをタイトル等に適用 */
         .wafu-font {
             font-family: 'Kiwi Maru', serif;
             font-weight: 500;
@@ -46,21 +45,19 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: linear-gradient(to bottom, #050510, #13132e); /* 深夜の空 */
+            background: linear-gradient(to bottom, #050510, #13132e);
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
             z-index: 100;
-            /* くぐる時のアニメーション（JSでクラスを追加して発動） */
             transition: transform 1.8s cubic-bezier(0.7, 0, 0.3, 1), opacity 1.5s ease-in;
         }
 
-        /* 【重要】鳥居をくぐる時のズーム＆フェードアウト効果 */
         .pass-through {
-            transform: scale(4); /* 4倍にズーム */
+            transform: scale(4);
             opacity: 0;
-            pointer-events: none; /* クリック不可に */
+            pointer-events: none;
         }
 
         /* --- CSSで作る鳥居 --- */
@@ -70,19 +67,16 @@
             height: 280px;
             margin-bottom: 30px;
         }
-        /* 一番上の笠木 */
         .torii-kasagi {
             position: absolute; top: 40px; left: 0;
             width: 300px; height: 25px; background: var(--torii-red);
             border-radius: 5px 5px 0 0; box-shadow: 0 5px 15px rgba(0,0,0,0.6);
         }
-        /* 2段目の貫 */
         .torii-nuki {
             position: absolute; top: 90px; left: -10px;
             width: 320px; height: 18px; background: var(--torii-red);
             box-shadow: 0 5px 15px rgba(0,0,0,0.6);
         }
-        /* 柱（グラデーションで立体感を） */
         .torii-hashira {
             position: absolute; top: 40px;
             width: 30px; height: 240px;
@@ -91,7 +85,6 @@
         .torii-hashira.left { left: 50px; }
         .torii-hashira.right { right: 50px; }
 
-        /* --- 石畳の参道（遠近感） --- */
         .stone-path {
             position: absolute;
             bottom: -20px;
@@ -104,7 +97,6 @@
             box-shadow: 0 0 30px rgba(255, 204, 0, 0.1);
         }
 
-        /* --- 揺らめくろうそく --- */
         .candle {
             position: absolute;
             bottom: 40px;
@@ -121,7 +113,6 @@
             width: 20px; height: 25px;
             background: var(--candle-fire);
             border-radius: 50% 50% 20% 20%;
-            /* 炎の揺らめきアニメーション */
             animation: flicker 0.15s infinite alternate;
         }
         
@@ -130,7 +121,6 @@
             100% { transform: scale(1.1) rotate(2deg); opacity: 1; box-shadow: 0 0 25px var(--candle-fire), 0 0 40px #ff5e00; }
         }
 
-        /* 鳥居をくぐるボタン */
         #enter-btn {
             padding: 15px 50px;
             font-size: 1.3em;
@@ -150,10 +140,10 @@
            🌸 おみくじ画面（メインコンテンツ）
            ========================================= */
         #main-content {
-            display: none; /* 最初は隠す */
+            display: none;
             padding: 40px 20px;
             opacity: 0;
-            transition: opacity 1.5s ease-in; /* フワッと表示 */
+            transition: opacity 1.5s ease-in;
         }
         h1 { color: var(--main-pink); margin-bottom: 30px; }
         
@@ -179,7 +169,6 @@
             transition: transform 1.2s cubic-bezier(0.1, 0.8, 0.2, 1);
         }
 
-        /* 振るアニメーション */
         @keyframes shake {
             0%, 100% { transform: rotate(0deg); }
             25% { transform: rotate(-12deg); }
@@ -218,16 +207,16 @@
 </head>
 <body>
 
-    <audio id="bgm" loop preload="auto">
+    <audio id="bgm" loop preload="metadata">
         <source src="https://sc.mp3-list.com/mp3/58/5826f0ac711d9d968b577458145789f2.mp3" type="audio/mp3">
     </audio>
-    <audio id="se-pass" preload="auto">
+    <audio id="se-pass" preload="metadata">
         <source src="https://soundeffect-lab.info/sound/anime/mp3/shakin1.mp3" type="audio/mp3">
     </audio>
-    <audio id="se-shake" loop preload="auto">
+    <audio id="se-shake" loop preload="metadata">
         <source src="https://soundeffect-lab.info/sound/various/mp3/maracas1.mp3" type="audio/mp3">
     </audio>
-    <audio id="se-result" preload="auto">
+    <audio id="se-result" preload="metadata">
         <source src="https://soundeffect-lab.info/sound/japan/mp3/hyoushigi1.mp3" type="audio/mp3">
     </audio>
 
@@ -266,12 +255,10 @@
     </div>
 
     <script>
-        // ★ご自身の写真ファイル名に合わせてください
         const photoList = [
             'photo1.jpg', 'photo2.jpg', 'photo3.jpg', 'photo4.jpg'
         ];
 
-        // 各要素の取得
         const bgm = document.getElementById('bgm');
         const sePass = document.getElementById('se-pass');
         const seShake = document.getElementById('se-shake');
@@ -281,70 +268,54 @@
         const mainContent = document.getElementById('main-content');
         const drawBtn = document.getElementById('draw-btn');
 
-        // ページ読み込み時のチェック（1日1回限定）
         window.onload = function() {
             const lastDrawDate = localStorage.getItem('omikujiDate');
             const today = new Date().toDateString(); 
 
             if (lastDrawDate === today) {
-                // すでに引いている場合、おみくじ画面のボタンをロック
                 drawBtn.disabled = true;
                 drawBtn.innerText = "今日のおみくじは終了！また明日ね";
             }
         };
 
-        // ⛩️ 演出1：鳥居をくぐる
         function passTorii() {
-            // 音響再生：BGM開始（スマホ対応のためクリックイベント内で再生）
             bgm.volume = 0.5;
-            bgm.play();
-            // 音響再生：くぐる音
-            sePass.play();
+            bgm.play().catch(e => console.log("BGM再生エラー:", e));
+            sePass.play().catch(e => console.log("効果音再生エラー:", e));
 
-            // CSSアニメーション発動（ズーム）
             entrance.classList.add('pass-through');
 
-            // 1.5秒後、完全に画面を切り替える
             setTimeout(() => {
                 entrance.style.display = 'none';
                 mainContent.style.display = 'block';
                 
-                // ほんの少し遅らせておみくじ画面をフワッと表示
                 setTimeout(() => {
                     mainContent.style.opacity = '1';
                 }, 100);
             }, 1500);
         }
 
-        // 🌸 演出2：おみくじを振る
         function startOmikuji() {
             const scene = document.getElementById('omikuji-scene');
             const stick = document.getElementById('stick');
             const resultBox = document.getElementById('result-box');
             const nextLink = document.getElementById('next-link');
             
-            // 連続クリック防止
             drawBtn.disabled = true;
             drawBtn.innerText = "心を込めて...";
 
-            // 前回の結果をリセット
             resultBox.classList.remove('show');
             scene.classList.remove('drawn');
             stick.innerText = ""; 
 
-            // 音響再生：シャカシャカ音
-            seShake.play();
-            // アニメーション発動：振る
+            seShake.play().catch(e => console.log("効果音エラー:", e));
             scene.classList.add('shaking');
 
-            // 2秒間振る
             setTimeout(() => {
-                // 振るのを止める
                 scene.classList.remove('shaking');
-                seShake.pause(); // 音を止める
-                seShake.currentTime = 0; // 音を頭に戻す
+                seShake.pause(); 
+                seShake.currentTime = 0; 
                 
-                // 結果の決定
                 const rand = Math.random(); 
                 let rankText = ""; let rankHtml = ""; let messageText = ""; let showPhoto = false;
 
@@ -360,21 +331,19 @@
                     showPhoto = true;
                 }
 
-                // 棒に文字をセットして飛び出させる（演出）
                 stick.innerText = rankText;
                 scene.classList.add('drawn');
 
-                // 棒が出きった頃（1.2秒後）に、下のメッセージと写真をフワッと表示
                 setTimeout(() => {
-                    // 音響再生：拍子木（ジャーン！）
-                    seResult.play();
+                    seResult.play().catch(e => console.log("効果音エラー:", e));
 
                     const rankDiv = document.getElementById('rank');
                     rankDiv.innerHTML = rankHtml;
-                    // 色の設定
+                    
                     if (rankText === "大大吉") rankDiv.style.color = "#ff1493";
                     else if (rankText === "大吉") rankDiv.style.color = "#ff8c00";
-                    else rankDiv.style.color = var(--main-pink);
+                    /* 🌟 修正点：エラーになっていた箇所を安全なカラーコードに直しました */
+                    else rankDiv.style.color = "#ff69b4";
 
                     document.getElementById('message').innerHTML = messageText;
                     
@@ -387,14 +356,11 @@
                         photoImg.style.display = 'none';
                     }
 
-                    // フワッと表示
                     resultBox.classList.add('show');
                     drawBtn.innerText = "また明日引いてね！";
                     
-                    // 日付を記憶（1日1回限定）
                     localStorage.setItem('omikujiDate', new Date().toDateString());
 
-                    // ★演出3：15秒のカウントダウンと自動移動機能
                     let timeLeft = 15;
                     nextLink.innerText = `次のページへ ➔ (${timeLeft}秒後に自動移動)`;
                     
@@ -403,15 +369,14 @@
                         if (timeLeft > 0) {
                             nextLink.innerText = `次のページへ ➔ (${timeLeft}秒後に自動移動)`;
                         } else {
-                            // 0秒になったらタイマーを止めて移動
                             clearInterval(countdownTimer);
                             window.location.href = 'countdown.html';
                         }
                     }, 1000); 
 
-                }, 1200); // 棒が出るアニメーション時間を待つ
+                }, 1200);
 
-            }, 2000); // 振る時間
+            }, 2000); 
         }
     </script>
 </body>
