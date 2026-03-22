@@ -19,7 +19,6 @@
         }
         h1 { color: #ff69b4; margin-bottom: 30px; }
         
-        /* --- おみくじの筒と棒のデザイン --- */
         #omikuji-scene {
             position: relative;
             width: 120px;
@@ -84,7 +83,6 @@
             transform: translate(-50%, -110px); 
         }
 
-        /* --- ボタンと結果表示 --- */
         button {
             padding: 15px 40px;
             font-size: 1.2em;
@@ -135,6 +133,7 @@
             font-size: 1.1em;
             border-bottom: 2px solid #ff69b4;
             padding-bottom: 5px;
+            transition: 0.3s;
         }
     </style>
 </head>
@@ -155,7 +154,7 @@
         <img id="photo" src="" alt="二人の思い出の写真">
     </div>
 
-    <a href="countdown.html" class="next-link">次のページへ ➔</a>
+    <a href="countdown.html" class="next-link" id="next-link">次のページへ ➔</a>
 
     <script>
         // ★ご自身の写真ファイル名に合わせてください
@@ -166,13 +165,11 @@
             'photo4.jpg'
         ];
 
-        // ★追加：ページを開いた時に「今日すでに引いているか」をチェック
         window.onload = function() {
             const lastDrawDate = localStorage.getItem('omikujiDate');
-            const today = new Date().toDateString(); // 今日の日付
+            const today = new Date().toDateString(); 
 
             if (lastDrawDate === today) {
-                // 今日すでに引いていた場合、最初からボタンを押せなくする
                 const btn = document.getElementById('draw-btn');
                 btn.disabled = true;
                 btn.innerText = "今日のおみくじは終了！また明日ね";
@@ -184,24 +181,20 @@
             const scene = document.getElementById('omikuji-scene');
             const stick = document.getElementById('stick');
             const resultBox = document.getElementById('result-box');
+            const nextLink = document.getElementById('next-link');
             
-            // 連続で押せないようにボタンを無効化
             btn.disabled = true;
             btn.innerText = "シャカシャカ...";
 
-            // 前回の結果をリセット
             resultBox.classList.remove('show');
             scene.classList.remove('drawn');
             stick.innerText = ""; 
 
-            // 1. 筒を振るアニメーション開始
             scene.classList.add('shaking');
 
-            // 2. 1.5秒後に筒を止めて、棒を出す
             setTimeout(() => {
                 scene.classList.remove('shaking');
                 
-                // 確率の計算と結果の決定
                 const rand = Math.random(); 
                 let rankText = "";
                 let rankHtml = "";
@@ -223,11 +216,9 @@
                     showPhoto = true;
                 }
 
-                // 棒に文字をセットして上に飛び出させる
                 stick.innerText = rankText;
                 scene.classList.add('drawn');
 
-                // 3. 棒が出きった頃（1秒後）に、下のメッセージと写真をフワッと表示
                 setTimeout(() => {
                     document.getElementById('rank').innerHTML = rankHtml;
                     if (rankText === "大大吉") {
@@ -249,18 +240,28 @@
                         photoImg.style.display = 'none';
                     }
 
-                    // フワッと表示
                     resultBox.classList.add('show');
-
-                    // ★変更：もう一度引けるように戻すのではなく、今日の分は終了にする
                     btn.innerText = "また明日引いてね！";
-                    
-                    // ★追加：引いた日付をブラウザに記憶させる
                     localStorage.setItem('omikujiDate', new Date().toDateString());
 
-                }, 1000); // 棒が出るアニメーション(1秒)を待つ
+                    // ★ここから追加：15秒のカウントダウンと自動移動機能
+                    let timeLeft = 15;
+                    nextLink.innerText = `次のページへ ➔ (${timeLeft}秒後に自動移動)`;
+                    
+                    const countdownTimer = setInterval(() => {
+                        timeLeft--;
+                        if (timeLeft > 0) {
+                            // 1秒ごとに文字を書き換える
+                            nextLink.innerText = `次のページへ ➔ (${timeLeft}秒後に自動移動)`;
+                        } else {
+                            // 0秒になったらタイマーを止めて、自動でページ移動
+                            clearInterval(countdownTimer);
+                            window.location.href = 'countdown.html';
+                        }
+                    }, 1000); // 1000ミリ秒（1秒）ごとに実行
 
-            }, 1500); // 筒を振る時間(1.5秒)
+                }, 1000); 
+            }, 1500); 
         }
     </script>
 </body>
