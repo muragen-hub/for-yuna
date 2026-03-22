@@ -151,8 +151,8 @@
     <div id="omikuji-scene">
         <div id="stick"></div> <div id="box-top"></div> <div id="box-front"></div> </div>
 
-    <p>心を込めて振ってみてね👇</p>
-    <button id="draw-btn" onclick="startOmikuji()">おみくじを振る！</button>
+    <p>振ってみて</p>
+    <button id="draw-btn" onclick="startOmikuji()">おみくじを振る</button>
 
     <div id="result-box">
         <div id="rank"></div>
@@ -160,7 +160,7 @@
         <img id="photo" src="" alt="二人の思い出の写真">
     </div>
 
-    <a href="countdown.html" class="next-link">次のページへ（お楽しみ） ➔</a>
+    <a href="countdown.html" class="next-link">次のページへ ➔</a>
 
     <script>
         // ★ご自身の写真ファイル名に合わせてください
@@ -202,15 +202,15 @@
 
                 if (rand < 0.10) {
                     rankText = "大大吉"; // 棒に縦書きで表示する文字
-                    rankHtml = "🌟 大大吉 🌟"; // 画面下に表示する文字
+                    rankHtml = "大大吉"; // 画面下に表示する文字
                     messageText = "You're the most beautiful woman! Fighting! マキシマイザー";
                 } else if (rand < 0.50) {
                     rankText = "大吉";
-                    rankHtml = "🍺 大吉 🍺";
+                    rankHtml = "大吉";
                     messageText = "無理せず。酒がなきゃやってられねえぜのあなたに!";
                 } else {
                     rankText = "吉";
-                    rankHtml = "💖 吉 💖";
+                    rankHtml = "吉";
                     messageText = "いつも頑張ってて尊敬してるよ。これ見て癒されてね";
                     showPhoto = true;
                 }
