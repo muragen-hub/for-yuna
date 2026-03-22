@@ -19,21 +19,15 @@
             color: #fff;
             margin: 0;
             padding: 0;
-            overflow: hidden;
+            overflow-x: hidden; /* 横スクロール防止 */
             display: flex;
             justify-content: center;
             align-items: center;
-            height: 100vh;
+            min-height: 100vh;
         }
 
-        .wafu-font {
-            font-family: 'Kiwi Maru', serif;
-        }
-
-        /* 🌟 カッコいい英語フォントクラス */
-        .eng-font {
-            font-family: 'Montserrat', sans-serif;
-        }
+        .wafu-font { font-family: 'Kiwi Maru', serif; }
+        .eng-font { font-family: 'Montserrat', sans-serif; }
 
         /* =========================================
            📅 カレンダー部分
@@ -109,63 +103,83 @@
         }
 
         /* =========================================
-           ⏳ カウントダウン画面
+           ⏳ カウントダウン & メッセージ画面
            ========================================= */
         #countdown-container {
             display: none;
             opacity: 0;
             transition: opacity 2s ease;
-            padding: 20px;
+            padding: 40px 20px;
             z-index: 10;
+            width: 100%;
+            box-sizing: border-box;
         }
 
-        /* 🌟 タイトルのデザイン（英語仕様） */
         h1.eng-font {
             color: #ff69b4;
-            font-size: 1.8em; /* 英語なので少し調整 */
+            font-size: 1.6em;
             font-weight: 300;
             letter-spacing: 4px;
-            text-transform: uppercase; /* 大文字にしてカッコよく */
-            margin-bottom: 45px;
+            text-transform: uppercase;
+            margin-bottom: 35px;
             text-shadow: 0 0 15px rgba(255, 105, 180, 0.6);
         }
 
         .timer-box {
             background: rgba(255, 255, 255, 0.1);
             backdrop-filter: blur(10px);
-            padding: 45px 35px;
+            padding: 35px 25px;
             border-radius: 25px;
             border: 1px solid rgba(255, 255, 255, 0.2);
             box-shadow: 0 15px 40px rgba(0, 0, 0, 0.6);
             display: inline-block;
+            margin-bottom: 40px;
         }
 
-        /* 🌟 数字のデザイン */
         .timer {
-            font-family: 'Montserrat', sans-serif;
-            font-size: 3.5em;
+            font-size: 3.2em;
             font-weight: 700;
             color: #fff;
-            letter-spacing: 2px;
-            text-shadow: 0 2px 5px rgba(0,0,0,0.6);
+            letter-spacing: 1px;
         }
 
         .timer span {
             font-size: 0.4em;
             color: #ffcc00;
-            margin: 0 8px;
+            margin: 0 5px;
             font-weight: 400;
+        }
+
+        /* 🌟 悠菜さんへのメッセージエリア */
+        #message-section {
+            opacity: 0;
+            margin-top: 20px;
+            padding: 20px;
+        }
+
+        .msg-text {
+            font-size: 1.5em;
+            line-height: 1.8;
+            color: #fff;
+            text-shadow: 0 0 10px rgba(255,255,255,0.3);
+        }
+
+        .highlight {
+            font-size: 1.2em;
+            color: #ffcc00; /* 金色で目立たせる */
+            display: block;
+            margin-top: 10px;
         }
 
         .back-link {
             display: inline-block;
-            margin-top: 60px;
+            margin-top: 50px;
             text-decoration: none;
             color: #ff69b4;
             font-weight: bold;
-            font-size: 1.15em;
+            font-size: 1.1em;
             border-bottom: 2px solid #ff69b4;
-            padding-bottom: 6px;
+            padding-bottom: 5px;
             transition: 0.3s;
         }
     </style>
@@ -176,7 +190,7 @@
         <div class="calendar-wrapper" id="calendar-wrapper">
             <div class="ring left"></div>
             <div class="ring right"></div>
-        </div>
+            </div>
     </div>
 
     <div id="countdown-container">
@@ -186,11 +200,19 @@
             <div class="timer eng-font" id="countdown"></div>
         </div>
 
+        <div id="message-section">
+            <p class="wafu-font msg-text">
+                悠菜へ<br>
+                <span class="highlight">無理せず頑張ってね</span>
+            </p>
+        </div>
+
         <br>
         <a href="index.html" class="back-link wafu-font">⬅ 神社の入口に戻る</a>
     </div>
 
     <script>
+        // --- カレンダーデータ ---
         const monthData = [
             { image: 'month1.jpg', text: '1ヶ月' },
             { image: 'month2.jpg', text: '2ヶ月' },
@@ -202,15 +224,16 @@
             { image: 'month8.jpg', text: '8ヶ月' },
             { image: 'month9.jpg', text: '9ヶ月' },
             { image: 'month10.jpg', text: '10ヶ月' },
-            { image: 'month11.jpg', text: '11ヶ月' },
-            // 必要に応じてここに 'month12.jpg' などを追加してください
+            { image: 'month11.jpg', text: '11ヶ月' }
         ];
 
         const calendarWrapper = document.getElementById('calendar-wrapper');
         const calendarSection = document.getElementById('calendar-section');
         const countContainer = document.getElementById('countdown-container');
+        const messageSection = document.getElementById('message-section');
         let pages = [];
 
+        // カレンダー生成
         function createCalendar() {
             for (let i = 0; i < monthData.length; i++) {
                 const page = document.createElement('div');
@@ -225,6 +248,7 @@
             }
         }
 
+        // めくるアニメーション
         function startFlipping() {
             let currentIndex = 0;
             const flipInterval = setInterval(() => {
@@ -240,6 +264,11 @@
                             countContainer.style.display = 'block';
                             setTimeout(() => {
                                 countContainer.style.opacity = '1';
+                                // 🌟 カウントダウンが出てから3秒後にメッセージをふわっと出す
+                                setTimeout(() => {
+                                    messageSection.style.transition = 'opacity 2.5s ease';
+                                    messageSection.style.opacity = '1';
+                                }, 3000);
                             }, 100);
                         }, 2000);
                     }, 2500);
@@ -252,7 +281,7 @@
             setTimeout(startFlipping, 2500); 
         };
 
-        // 🌟 ターゲット日付
+        // --- カウントダウンロジック ---
         const targetDate = new Date("2026-03-26T00:00:00").getTime();
 
         const timer = setInterval(function() {
@@ -262,7 +291,6 @@
             if (distance < 0) {
                 clearInterval(timer);
                 document.getElementById("countdown").innerHTML = "🎉 Happy Anniversary 🎉";
-                document.getElementById("countdown").style.fontSize = "1.5em";
                 return;
             }
 
@@ -271,7 +299,6 @@
             const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
             const seconds = Math.floor((distance % (1000 * 60)) / 1000);
 
-            // 🌟 単位も英語にする場合はこちらを変更
             document.getElementById("countdown").innerHTML = 
                 days + "<span>Days</span>" + 
                 hours + "<span>Hrs</span>" + 
