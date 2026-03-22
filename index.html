@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>お疲れ様！おみくじ</title>
+    <style>
+        body {
+            font-family: 'Helvetica Neue', Arial, sans-serif;
+            text-align: center;
+            background-color: #fff0f5; /* 優しいピンク系の背景 */
+            color: #333;
+            padding: 50px 20px;
+        }
+        h1 { color: #ff69b4; }
+        button {
+            padding: 15px 40px;
+            font-size: 1.2em;
+            background-color: #ff69b4;
+            color: white;
+            border: none;
+            border-radius: 30px;
+            cursor: pointer;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            transition: 0.3s;
+        }
+        button:hover { background-color: #ff1493; transform: scale(1.05); }
+        #result-box {
+            margin-top: 40px;
+            padding: 20px;
+            min-height: 150px;
+        }
+        #rank { font-size: 2em; font-weight: bold; margin-bottom: 15px; }
+        #message { font-size: 1.3em; line-height: 1.5; }
+        #photo {
+            max-width: 80%;
+            max-height: 400px; /* 写真が大きすぎないように縦幅を制限 */
+            height: auto;
+            border-radius: 15px;
+            margin-top: 20px;
+            display: none; /* 最初は非表示 */
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+            margin-left: auto;
+            margin-right: auto;
+        }
+        .next-link {
+            display: inline-block;
+            margin-top: 50px;
+            text-decoration: none;
+            color: #ff69b4;
+            font-weight: bold;
+            font-size: 1.1em;
+            border-bottom: 2px solid #ff69b4;
+            padding-bottom: 5px;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>今日もお仕事お疲れ様！</h1>
+    <p>今の気分でボタンを押してみてね👇</p>
+    
+    <button onclick="drawOmikuji()">おみくじを引く！</button>
+
+    <div id="result-box">
+        <div id="rank"></div>
+        <div id="message"></div>
+        <img id="photo" src="" alt="二人の思い出の写真">
+    </div>
+
+    <a href="countdown.html" class="next-link">次のページへ（お楽しみ） ➔</a>
+
+    <script>
+        // ★★★ 修正ポイント1：表示したい写真のファイル名をここにリストアップします ★★★
+        // 例: ['photo1.jpg', 'photo2.png', 'photo3.jpeg'] 
+        // 好きなだけ増やせます。同じフォルダに画像を置いてください。
+        const photoList = [
+            'photo1.jpg',
+            'photo2.jpg',
+            'photo3.jpg',
+            'photo4.jpg'
+        ];
+
+        function drawOmikuji() {
+            const rand = Math.random(); 
+            const rankDiv = document.getElementById('rank');
+            const messageDiv = document.getElementById('message');
+            const photoImg = document.getElementById('photo');
+
+            // 一旦写真とメッセージをリセット
+            photoImg.style.display = 'none';
+            photoImg.src = ''; 
+            rankDiv.innerText = '';
+            messageDiv.innerText = '';
+
+            if (rand < 0.10) {
+                // 10%の確率
+                rankDiv.innerText = "🌟 大吉 🌟";
+                rankDiv.style.color = "#ff1493";
+                messageDiv.innerText = "You're the most beautiful woman! Fighting! マキシマイザー";
+            } else if (rand < 0.50) {
+                // 40%の確率
+                rankDiv.innerText = "🍺 中吉 🍺";
+                rankDiv.style.color = "#ff8c00";
+                messageDiv.innerText = "無理せず。酒がなきゃやってられねえぜのあなたに!";
+            } else {
+                // 残り50%の確率
+                rankDiv.innerText = "💖 吉 💖";
+                rankDiv.style.color = "#ff69b4";
+                messageDiv.innerText = "いつも頑張ってて尊敬してるよ。これ見て癒されてね";
+
+                // ★★★ 修正ポイント2：写真リストからランダムに1枚選んで表示 ★★★
+                if (photoList.length > 0) {
+                    // リストの中からランダムな数字（添字）を選ぶ
+                    const randomIndex = Math.floor(Math.random() * photoList.length);
+                    // 選ばれたファイル名をsrcに設定
+                    photoImg.src = photoList[randomIndex];
+                    photoImg.style.display = 'block'; 
+                }
+            }
+        }
+    </script>
+</body>
+</html>

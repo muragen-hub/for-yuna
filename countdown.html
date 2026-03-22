@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>記念日まであと少し！</title>
+    <style>
+        body {
+            font-family: 'Helvetica Neue', Arial, sans-serif;
+            text-align: center;
+            background-color: #e6e6fa; /* 優しいラベンダー系の背景 */
+            color: #333;
+            padding: 50px 20px;
+        }
+        h1 { color: #8a2be2; margin-bottom: 40px; }
+        .timer-box {
+            background-color: white;
+            padding: 30px;
+            border-radius: 20px;
+            display: inline-block;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+        .timer {
+            font-size: 2.5em;
+            font-weight: bold;
+            color: #8a2be2;
+            letter-spacing: 2px;
+        }
+        .labels {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 10px;
+            font-size: 1.2em;
+            color: #666;
+        }
+        .back-link {
+            display: inline-block;
+            margin-top: 50px;
+            text-decoration: none;
+            color: #8a2be2;
+            font-weight: bold;
+            font-size: 1.1em;
+            border-bottom: 2px solid #8a2be2;
+            padding-bottom: 5px;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>次の記念日（デート）まで...</h1>
+    
+    <div class="timer-box">
+        <div class="timer" id="countdown">計算中...</div>
+    </div>
+
+    <br>
+    <a href="index.html" class="back-link">⬅ おみくじに戻る</a>
+
+    <script>
+        // 🌟 ここに記念日の日付を設定してください（年-月-日T時間:分:秒）
+        // 例: 2026年12月24日 0時0分0秒 の場合
+        const targetDate = new Date("2026-03-26T00:00:00").getTime();
+
+        const timer = setInterval(function() {
+            const now = new Date().getTime();
+            const distance = targetDate - now;
+
+            // 記念日を迎えた時の表示
+            if (distance < 0) {
+                clearInterval(timer);
+                document.getElementById("countdown").innerHTML = "🎉 今日がその日だよ！楽しもうね！ 🎉";
+                document.getElementById("countdown").style.fontSize = "1.5em";
+                return;
+            }
+
+            // 日、時間、分、秒の計算
+            const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+            // 画面に表示するテキストを組み立て
+            document.getElementById("countdown").innerHTML = 
+                days + "日 " + hours + "時間 " + minutes + "分 " + seconds + "秒";
+        }, 1000); // 1秒（1000ミリ秒）ごとに更新
+    </script>
+</body>
+</html>
