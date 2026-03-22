@@ -150,7 +150,7 @@
             const today = new Date().toDateString(); 
             if (lastDrawDate === today) {
                 drawBtn.disabled = true;
-                drawBtn.innerText = "今日のおみくじは終了！</br>ずるは禁止";
+                drawBtn.innerHTML = "今日のおみくじは終了！<br>ずるは禁止";
                 document.getElementById('next-link').style.display = "inline-block";
             }
         };
